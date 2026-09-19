@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#081519">
+    <title>HydroGuard | Catchment early warning</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-shell">
+        <header class="topbar">
+            <div class="brand-lockup">
+                <div class="brand-mark"><span></span><span></span><span></span></div>
+                <div><p class="eyebrow">CATCHMENT OPERATIONS</p><h1>HYDRO<span>GUARD</span></h1></div>
+            </div>
+            <div class="system-state"><span class="pulse-dot"></span><span>SYSTEM NOMINAL</span><small id="last-update">Updated just now</small></div>
+            <div class="top-actions">
+                <button class="icon-button" id="theme-toggle" type="button" aria-label="Toggle theme">◐</button>
+                <button class="outline-button" id="locate-button" type="button"><span>◎</span> Locate me</button>
+            </div>
+        </header>
+
+        <main class="workspace">
+            <section class="overview-row">
+                <div><p class="eyebrow">LIVE OVERVIEW / <span id="clock">00:00:00</span></p><h2>Hillside watershed watch</h2></div>
+                <div class="overview-metrics">
+                    <div><span class="metric-label">STATIONS ONLINE</span><strong id="online-count">06 / 06</strong></div>
+                    <div><span class="metric-label">ACTIVE ALERTS</span><strong class="alert-number" id="alert-count">00</strong></div>
+                    <div><span class="metric-label">ALERT RADIUS</span><strong><span id="radius-readout">15</span> <small>KM</small></strong></div>
+                </div>
+            </section>
+
+            <section class="status-banner" id="status-banner">
+                <div class="banner-icon">!</div><div><strong id="banner-title">MONITORING ACTIVE</strong><p id="banner-copy">Sensor mesh is connected. Simulated readings refresh every 3 seconds.</p></div><span class="banner-time mono" id="banner-time">--:--:--</span>
+            </section>
+
+            <div class="main-grid">
+                <section class="panel stations-panel">
+                    <div class="panel-heading"><div><p class="eyebrow">FIELD NETWORK</p><h3>Monitoring stations</h3></div><span class="live-tag"><i></i> LIVE</span></div>
+                    <div class="station-table-head"><span>STATION</span><span>RISK</span><span>VELOCITY</span><span>FLOW RATE</span><span>FREQUENCY</span></div>
+                    <div id="station-list" class="station-list"></div>
+                    <div class="panel-foot"><span><i class="legend-dot normal"></i> Normal</span><span><i class="legend-dot moderate"></i> Moderate</span><span><i class="legend-dot high"></i> High risk</span><span class="mono">AUTO REFRESH 03 SEC</span></div>
+                </section>
+
+                <section class="panel map-panel">
+                    <div class="panel-heading"><div><p class="eyebrow">PROXIMITY GRID</p><h3>Catchment map</h3></div><span class="map-location mono" id="location-label">LOCATION PENDING</span></div>
+                    <div class="map-canvas" id="map-canvas"><div class="map-grid"></div><div class="contour contour-a"></div><div class="contour contour-b"></div><div class="river-line"></div><div class="user-marker" id="user-marker"><span></span><label>YOU</label></div><div id="map-stations"></div><div class="map-scale mono">N ↑<br><span>0</span><span>5</span><span>10 KM</span></div></div>
+                    <div class="map-note"><span class="radius-ring"></span><span>Alert radius <b id="map-radius">15 km</b></span><span class="map-separator"></span><span id="nearby-count">0 stations in range</span></div>
+                </section>
+            </div>
+
+            <section class="weather-section"><div class="section-heading"><div><p class="eyebrow">ATMOSPHERIC FEED</p><h3>5-day weather outlook</h3></div><span class="weather-source mono">SIMULATED / LOCAL MODEL</span></div><div class="forecast-strip" id="forecast-strip"></div></section>
+
+            <div class="lower-grid">
+                <section class="panel log-panel"><div class="panel-heading"><div><p class="eyebrow">EVENT STREAM</p><h3>Alert & SMS relay log</h3></div><button class="text-button" id="clear-log" type="button">CLEAR LOG</button></div><div id="event-log" class="event-log"></div></section>
+                <aside class="panel settings-panel"><div class="panel-heading"><div><p class="eyebrow">CONTROL SURFACE</p><h3>Alert settings</h3></div><span class="settings-icon">⚙</span></div><label class="range-label">MODERATE THRESHOLD <output id="moderate-output">45</output><input id="moderate-threshold" type="range" min="25" max="70" value="45"></label><label class="range-label">HIGH RISK THRESHOLD <output id="high-output">70</output><input id="high-threshold" type="range" min="55" max="90" value="70"></label><label class="range-label">ALERT RADIUS <output><span id="radius-output">15</span> km</output><input id="radius-input" type="range" min="5" max="50" value="15"></label><label class="select-label">FOCUS STATION<select id="station-select"><option value="all">All stations</option></select></label><div class="phone-list"><span class="metric-label">REGISTERED SMS RELAY</span><div><span>+1 (555) 019-2048</span><span>+1 (555) 019-7712</span></div></div><button class="outline-button full-width" id="gps-button" type="button">◎ Use device location</button></aside>
+            </div>
+
+            <footer class="footer-note"><span><b>PRODUCTION HOOKS</b> Ultrasonic / radar gauges → LoRaWAN or GSM uplink · SMS relay → Twilio · Weather feed → live API</span><span class="mono">HG-OPS / v0.8.4</span></footer>
+        </main>
+    </div>
+    <div class="flash-overlay" id="flash-overlay"></div>
+    <div class="toast" id="toast" role="status"></div>
+    <script src="app.js"></script>
+</body>
+</html>
